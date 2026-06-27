@@ -14,3 +14,27 @@ export const registerUserController = CatchAsync(
         });
     },
 );
+
+export const loginUserController = CatchAsync(
+    async (req: Request, res: Response) => {
+        const result = await AuthService.loginUser(req.body);
+
+        sendResponse(res, 200, {
+            success: true,
+            message: "Logged in successfully",
+            data: result,
+        });
+    },
+);
+
+export const refreshTokenController = CatchAsync(
+    async (req: Request, res: Response) => {
+        const result = await AuthService.refreshToken(req.body);
+
+        sendResponse(res, 200, {
+            success: true,
+            message: "Tokens refreshed successfully",
+            data: result,
+        });
+    }
+);

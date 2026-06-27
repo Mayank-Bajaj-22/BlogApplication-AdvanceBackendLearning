@@ -1,6 +1,6 @@
 import { IUserResponse } from "../../types/index.js";
 
-export const toUserRepsonse = (user: IUserResponse) => {
+export const toUserResponse = (user: IUserResponse) => {
     return {
         id: user.id,
         username: user.username,
@@ -8,4 +8,4 @@ export const toUserRepsonse = (user: IUserResponse) => {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
     };
-};
+};  

@@ -33,11 +33,37 @@ export const authRepositry = {
         return createdUser;
     },
 
-    createRefreshToekn: async (data: {token: string, userId: string, expiresAt: Date}) => {
+    createRefreshToken: async (data: {token: string, userId: string, expiresAt: Date}) => {
         const refreshToken = await prisma.refreshToken.create({
             data,
         });
 
         return refreshToken;
+    },
+
+    findRefreshToken: async (token: string) => {
+        const refreshToken = await prisma.refreshToken.findUnique({
+            where: {
+                token,
+            },
+        });
+
+        return refreshToken;
+    },
+
+    findRefreshTokenByUserId: async (userId: string) => {
+        const refreshToken = await prisma.refreshToken.findMany({
+            where: {
+                userId,
+            },
+        });
+    },
+
+    deleteRefreshTokenById: async (id: string) => {
+        await prisma.refreshToken.delete({
+            where: {
+                id,
+            },
+        });
     }
 };
