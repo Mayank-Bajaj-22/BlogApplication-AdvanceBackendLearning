@@ -13,5 +13,5 @@ export type ApiResponse<T> = {
 };
 
 export interface IJwtPayload {
-    userId: string
+    userId: string;
 };

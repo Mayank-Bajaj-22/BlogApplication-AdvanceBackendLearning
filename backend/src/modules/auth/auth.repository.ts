@@ -1,6 +1,16 @@
 import { prisma } from "../../lib/prisma.js"
 
 export const authRepositry = {
+    findUserById: async (id: string) => {
+        const user = await prisma.user.findUnique({
+            where: {
+                id,
+            },
+        });
+
+        return user;
+    },
+
     findUserByUsername: async (username: string) => {
         const user = await prisma.user.findUnique({
             where: {
@@ -57,12 +67,30 @@ export const authRepositry = {
                 userId,
             },
         });
+
+        return refreshToken;
     },
 
     deleteRefreshTokenById: async (id: string) => {
         await prisma.refreshToken.delete({
             where: {
                 id,
+            },
+        });
+    },
+
+    deleteRefreshTokenByToken: async (token: string) => {
+        await prisma.refreshToken.delete({
+            where: {
+                token,
+            },
+        });
+    },
+
+    deleteAllRefreshTokenByUser: async (userId: string) => {
+        await prisma.refreshToken.deleteMany({
+            where: {
+                userId,
             },
         });
     }

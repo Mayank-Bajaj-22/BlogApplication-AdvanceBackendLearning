@@ -119,5 +119,45 @@ export const AuthService = {
             accessToken: newAccessToken,
             refreshToken: newRefreshToken
         };
+    },
+
+    getCurrentUser: async (userId: string) => {
+        const user = await authRepositry.findUserById(userId);
+
+        if (!user) {
+            throw new AppError("User not found", 404);
+        }
+
+        return {
+            user: toUserResponse(user),
+        };
+    },
+
+    logout: async (refreshToken: string) => {
+        if (!refreshToken) {
+            throw new AppError("Refresh token required", 401);
+        }
+
+        const refreshTokenHashed = hashRefreshToken(refreshToken);
+
+        const existingToken = await authRepositry.findRefreshToken(refreshTokenHashed);
+
+        if (!existingToken) {
+            throw new AppError("Invalid refresh token", 404);
+        }
+
+        await authRepositry.deleteRefreshTokenById(existingToken.id);
+
+        return true;
+    },
+
+    logoutAllDevices: async (userId: string) => {
+        if (!userId) {
+            throw new AppError("User id not found", 404);
+        }
+
+        await authRepositry.deleteAllRefreshTokenByUser(userId);
+
+        return true;
     }
 };
