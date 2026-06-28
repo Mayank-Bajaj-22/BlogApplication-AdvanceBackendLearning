@@ -1,11 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { CatchAsync } from "../../utils/CatchAsync.js";
-import { AuthService } from "./auth.service.js";
+import { authService } from "./auth.container.js"
 import { sendResponse } from "../../utils/sendResponse.js";
+import { destroyCookies, setCookies } from "../../utils/auth.helper.js";
 
 export const registerUserController = CatchAsync(
     async (req: Request, res: Response) => {
-        const result = await AuthService.registerUser(req.body);
+        const result = await authService.registerUser(req.body);
+
+        setCookies(res, result.accessToken, result.refreshToken);
 
         sendResponse(res, 201, {
             success: true,
@@ -17,7 +20,9 @@ export const registerUserController = CatchAsync(
 
 export const loginUserController = CatchAsync(
     async (req: Request, res: Response) => {
-        const result = await AuthService.loginUser(req.body);
+        const result = await authService.loginUser(req.body);
+
+        setCookies(res, result.accessToken, result.refreshToken);
 
         sendResponse(res, 200, {
             success: true,
@@ -29,7 +34,9 @@ export const loginUserController = CatchAsync(
 
 export const refreshTokenController = CatchAsync(
     async (req: Request, res: Response) => {
-        const result = await AuthService.refreshToken(req.body);
+        const result = await authService.refreshToken(req.body);
+
+        setCookies(res, result.accessToken, result.refreshToken);
 
         sendResponse(res, 200, {
             success: true,
@@ -41,7 +48,7 @@ export const refreshTokenController = CatchAsync(
 
 export const currentUserController = CatchAsync(
     async (req: Request, res: Response) => {
-        const result = await AuthService.getCurrentUser(req?.userId as string);
+        const result = await authService.getCurrentUser(req?.userId as string);
 
         sendResponse(res, 200, {
             success: true,
@@ -55,7 +62,9 @@ export const logoutController = CatchAsync(
     async (req: Request, res: Response) => {
         const { refreshToken } = req.body;
 
-        const result = await AuthService.logout(refreshToken);
+        const result = await authService.logout(refreshToken);
+
+        destroyCookies(res);
 
         sendResponse(res, 200, {
             success: true,
@@ -66,7 +75,9 @@ export const logoutController = CatchAsync(
 
 export const logoutAllController = CatchAsync(
     async (req: Request, res: Response) => {
-        const result = await AuthService.logoutAllDevices(req.userId as string);
+        const result = await authService.logoutAllDevices(req.userId as string);
+
+        destroyCookies(res);
 
         sendResponse(res, 200, {
             success: true,
