@@ -21,7 +21,9 @@ app.get('/health-check', (req: Request, res: Response) => {
 })
 
 import authRouter from "./modules/auth/auth.route.js";
+import postRouter from "./modules/post/post.route.js";
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/post", postRouter);
 
 app.use(globalErrorHandler);

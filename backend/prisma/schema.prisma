@@ -38,8 +38,8 @@ model Post {
   content       String
   imageUrl      String?
 
-  authorId      String
-  author        User          @relation(fields:[authorId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User          @relation(fields:[userId], references: [id], onDelete: Cascade)
 
   comments      Comment[]
 
