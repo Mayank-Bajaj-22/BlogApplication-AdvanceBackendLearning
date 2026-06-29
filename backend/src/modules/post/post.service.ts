@@ -1,5 +1,6 @@
 import { IFileService } from "../../utils/file.interface.js";
 import { IPostRepository } from "./post.interface.js";
+import { toPostListResponse } from "./post.mapper.js";
 import { createPostDTO } from "./post.schema.js";
 
 export class PostService {
@@ -25,7 +26,6 @@ export class PostService {
                 userId,
                 imageUrl,
             );
-            console.log(imageUrl)
         } else {
             createdPost = await this.repo.createPost(
                 title,
@@ -35,5 +35,10 @@ export class PostService {
         }
 
         return createdPost;
+    }
+
+    async getUserPosts (userId: string) {
+        const posts = await this.repo.getPostsByUserId(userId);
+        return toPostListResponse(posts);
     }
 } 

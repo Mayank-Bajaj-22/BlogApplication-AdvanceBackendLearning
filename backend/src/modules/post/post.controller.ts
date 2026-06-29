@@ -24,3 +24,9 @@ export const createPostController = CatchAsync(
         });
     },
 );
+
+export const getUserPostsController = CatchAsync(
+    async (req: Request, res: Response) => {
+        const result = await postService.getUserPosts(req.userId as string);
+    }
+)

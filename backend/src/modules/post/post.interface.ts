@@ -5,4 +5,6 @@ export interface IPostRepository {
         userId: string,
         imageUrl?: string
     ) : Promise<any>;
+
+    getPostsByUserId(userId: string) : Promise<any>;
 }
