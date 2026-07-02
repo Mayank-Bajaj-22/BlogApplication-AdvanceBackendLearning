@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -49,10 +48,10 @@ model Post {
 
 model Comment {
   id            String        @id @default(uuid())
-  content       String
+  comment       String
 
-  authorId      String
-  author        User          @relation(fields:[authorId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User          @relation(fields:[userId], references: [id], onDelete: Cascade)
 
   postId        String
   post          Post          @relation(fields:[postId], references: [id], onDelete: Cascade)
