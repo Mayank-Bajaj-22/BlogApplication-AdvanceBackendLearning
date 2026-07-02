@@ -8,7 +8,11 @@ import { loginUserDTO, refreshTokenDTO, registerUserDTO } from "./auth.schema.js
 
 export class AuthService {
     constructor(private repo: IAuthRepository) {}
-    async registerUser(body: registerUserDTO) {
+    async registerUser(body: registerUserDTO) : Promise<{
+        user: ReturnType<typeof toUserResponse>
+        accessToken: string;
+        refreshToken: string;
+    }> {
         const { username, email, password } = body;
 
         const existingUserByUsername = await this.repo.findUserByUsername(username);
